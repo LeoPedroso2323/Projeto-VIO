@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 import api from "../axios/axios";
-import { Button } from "@mui/material";
+import { Button, IconButton, Alert, Snackbar } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 function listUsers() {
@@ -37,6 +37,15 @@ function listUsers() {
         <TableCell align="center">{user.name}</TableCell>
         <TableCell align="center">{user.email}</TableCell>
         <TableCell align="center">{user.cpf}</TableCell>
+        <TableCell align="center">
+          <IconButton onClick={() => deleteUser}>
+            <DeleteIcon color="error"/>
+          </IconButton>
+        </TableCell>
+
+
+
+
       </TableRow>
     );
   });
