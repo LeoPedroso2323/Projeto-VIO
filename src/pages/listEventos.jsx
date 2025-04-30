@@ -10,6 +10,7 @@ import api from "../axios/axios"; // Certifique-se de que a função getEventos(
 import { Button, IconButton, Alert, Snackbar } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import ModalCriarIngresso from "../components/ModalCriarIngresso";
 
 function ListEventos() {
   const [eventos, setEventos] = useState([]);
@@ -60,6 +61,19 @@ function ListEventos() {
     navigate("/"); // Redireciona para a página de login
   }
 
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const abrirModalIngresso = (evento) => {
+    setEventoSelecionado(evento);
+    setModalOpen(true);
+  };
+
+  const fecharModalIngresso = () => {
+    setModalOpen(false);
+    setEventoSelecionado("");
+  };
+
   // Mapeando os eventos para exibição na tabela
   const listEventos = eventos.map((evento) => (
     <TableRow key={evento.id_evento}>
@@ -70,6 +84,12 @@ function ListEventos() {
       <TableCell align="center">
         <IconButton onClick={() => deleteEvent(evento.id_evento)}>
           <DeleteIcon color="error" />
+        </IconButton>
+      </TableCell>
+
+      <TableCell>
+        <IconButton onClick={() => abrirModalIngresso(evento)}>
+          Criar ingresso
         </IconButton>
       </TableCell>
     </TableRow>
@@ -97,6 +117,11 @@ function ListEventos() {
           {alert.message}
         </Alert>
       </Snackbar>
+      <ModalCriarIngresso
+        open={modalOpen}
+        onClose={fecharModalIngresso}
+        eventoSelecionado={eventoSelecionado}
+      />
 
       {/* Condicionalmente exibe "Carregando..." ou a lista de eventos */}
       {eventos.length === 0 ? (
@@ -118,7 +143,9 @@ function ListEventos() {
           {/* Tabela de Eventos */}
           <TableContainer component={Paper} style={{ margin: "2px" }}>
             <Table size="small">
-              <TableHead style={{ backgroundColor: "brown", borderStyle: "solid" }}>
+              <TableHead
+                style={{ backgroundColor: "brown", borderStyle: "solid" }}
+              >
                 <TableRow>
                   <TableCell align="center">Nome</TableCell>
                   <TableCell align="center">Descrição</TableCell>

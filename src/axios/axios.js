@@ -18,6 +18,7 @@ const sheets = {
   getEventos: () => api.get("evento"),
 
   deleteEvent: (id_evento) => api.delete(`evento/${id_evento}`),
+  createIngresso: (ingresso) => axios.post("/ingresso", ingresso)
 };
 
 export default sheets;
