@@ -11,7 +11,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<ListEventos />} />
           <Route path="/cadastro" element={<Cadastro />} />
 
           

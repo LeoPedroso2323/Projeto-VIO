@@ -1,25 +1,31 @@
-import { LensTwoTone } from "@mui/icons-material";
 import axios from "axios";
 
-// Criação da instância do axios
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1/",
+  baseURL: "http://localhost:5000/api/v1/",
   headers: {
-    accept: "application/json",
-  },
+    accept: "application/json"
+  }
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      config.headers.Authorization = `${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 const sheets = {
   getUsers: () => api.get("user"),
-
-  postLogin: (user) => api.post("login/", user),
-
-  deleteUser: (id_usuario) => api.delete(`user/${id_usuario}`),
-
   getEventos: () => api.get("evento"),
-
-  deleteEvent: (id_evento) => api.delete(`evento/${id_evento}`),
-  createIngresso: (ingresso) => axios.post("/ingresso", ingresso),
+  postLogin: (user) => api.post("login/", user),
+  deleteUser: (id) => api.delete("user/" + id),
+  deleteEvento: (id_evento) => api.delete("evento/" + id_evento),
+  createIngresso: (dados) => api.post("ing/", dados),
 
   createEvento: (form, imagem) => {
     const data = new FormData();
@@ -28,11 +34,11 @@ const sheets = {
 
     return api.post("/evento", data, {
       headers: {
-        "Content-Type": "multipart/form-data", // Corrigido aqui
-        Accept: "application/json",
-      },
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json"
+      }
     });
-  },
+  }
 };
 
 export default sheets;
